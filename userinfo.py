@@ -274,6 +274,7 @@ if __name__ == "__main__":
 	already_user = uis.get_all_already_read_user()
 	not_user = uis.get_all_not_read_user()
 	reading_user = uis.get_all_reading_user()
+	register_user = uis.get_register()
 	
 	print("一共有用户: {}".format(len(all_user)))
 	print("已经完成: {} 完成比例: {:.3f}".format(len(already_user), len(already_user)/len(all_user)))
@@ -281,6 +282,9 @@ if __name__ == "__main__":
 	print("正在进行: {}".format(len(reading_user)))
 	for user in reading_user:
 		res = uis.get_user_read_count(user[0])
-		print("User:{} has already reads {}".format(user[0], res))
+		print("User:{} has already reads {}".format(user[1], res))
+	print("注册用户:{}".format(len(register_user)))
+	for user in register_user:
+		print("Mobile:{}".format(user[1]))
 	
 	
