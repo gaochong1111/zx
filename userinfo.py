@@ -261,7 +261,7 @@ class UserInfoService(object):
 			'''
 		conn = self.db.get_conn()
 		res = self.db.fetchall(conn, sql, (uid, time_ms))
-		if res:
+		if res[0][0]:
 			return res[0][0]
 		else:
 			return 0
