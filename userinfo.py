@@ -167,7 +167,7 @@ class UserInfoService(object):
 		else:
 			return None
 			
-	def get_one_mobile(self, mobile):
+	def get_user_mobile(self, mobile):
 		'''
 			查询一条用户信息
 			
@@ -175,7 +175,7 @@ class UserInfoService(object):
 		'''
 		sql = '''SELECT * FROM userinfo WHERE mobile=?'''
 		conn = self.db.get_conn()
-		res = self.db.fetchone(conn, sql, uid)
+		res = self.db.fetchone(conn, sql, mobile)
 		
 		if len(res)>0:
 			return res[0]
@@ -326,7 +326,7 @@ if __name__ == "__main__":
 			for user in res:
 				print("Mobile: {}, IP:{}, Level:{}, Score:{}, Register:{}".format(user[1], user[2], user[6], user[5], uis.get_time_str(int(user[4]))))
 		elif argv[1] == "mobile":
-			res = uis.get_one_mobile(argv[2])
+			res = uis.get_user_mobile(argv[2])
 			for user in res:
 				print("Mobile: {}, IP:{}, Level:{}, Score:{}, Register:{}".format(user[1], user[2], user[6], user[5], uis.get_time_str(int(user[4]))))
 	else:
