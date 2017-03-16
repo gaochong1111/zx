@@ -7,8 +7,9 @@ myUtil = Util()
 
 def readRegUser():
 	'''
-		完成一个User的任务
+		完成注册User的任务
 	'''
+	print("Register User.")
 	#get user
 	users = uis.get_register()
 	for user in users:
@@ -48,6 +49,7 @@ def readReadingUser():
 	'''
 		完成一个User的任务
 	'''
+	print("Reading User.")
 	#get user
 	users = uis.get_all_reading_user()
 	for user in users:
@@ -65,6 +67,10 @@ def readReadingUser():
 			data = myUtil.login(mobile, only, cookie)
 			token = data['data']['token']
 			if data['status'] == 200:
+				time.sleep(random.randint(1,3))
+				#sign
+				data = myUtil.signDay(token, uid, cookie)
+				time.sleep(random.randint(1,3))
 				#read list
 				THRESHOLD = 18 - read_count
 				total = 0
