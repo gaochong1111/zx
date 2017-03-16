@@ -325,6 +325,10 @@ if __name__ == "__main__":
 			res = uis.get_user_ip(argv[2])
 			for user in res:
 				print("Mobile: {}, IP:{}, Level:{}, Score:{}, Register:{}".format(user[1], user[2], user[6], user[5], uis.get_time_str(int(user[4]))))
+		elif argv[1] == "mobile":
+			res = uis.get_one_mobile(argv[2])
+			for user in res:
+				print("Mobile: {}, IP:{}, Level:{}, Score:{}, Register:{}".format(user[1], user[2], user[6], user[5], uis.get_time_str(int(user[4]))))
 	else:
 		all_user = uis.get_all()
 		already_user = uis.get_all_already_read_user()
