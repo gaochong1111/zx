@@ -1,6 +1,6 @@
 from dbutil import DBUtil
 import time
-
+from sys import argv
 class UserInfoService(object):
 	'''
 		提供对数据库操作的接口
@@ -249,6 +249,9 @@ class UserInfoService(object):
 		return res
 		
 	def get_user_read_count(self, uid):
+		'''
+			查询用户的阅读量
+		'''
 		time_ms = int(time.time())
 		time_local = time.localtime(time_ms)
 		time_format = "%Y-%m-%d"
@@ -265,26 +268,80 @@ class UserInfoService(object):
 			return res[0][0]
 		else:
 			return 0
-		
+			
+	def get_user_level(self, level):
+		'''
+			查询一定level的用户
+		'''
+		sql = '''SELECT * FROM userinfo
+				WHERE level >= ?'''
+		conn = self.db.get_conn()
+		res = self.db.fetchall(conn, sql, (level,))
+		return res
+	
+	def get_user_score(self, score):
+		'''
+			查询一定score的用户
+		'''
+		sql = '''SELECT * FROM userinfo
+				WHERE score >= ?'''
+		conn = self.db.get_conn()
+		res = self.db.fetchall(conn, sql, (score,))
+		return res
+	
+	def get_user_ip(self, ip):
+		'''
+			查询一定ip的用户
+		'''
+		sql = '''SELECT * FROM userinfo
+				WHERE ip = ?'''
+		conn = self.db.get_conn()
+		res = self.db.fetchall(conn, sql, (ip,))
+		return res
+	
+	def get_time_str(self, time_ms, time_format="%Y-%m-%d"):
+		'''
+			毫秒-->指定格式
+		'''
+		time_local = time.localtime(time_ms)
+		time_str = time.strftime(time_format, time_local)
+		return time_str
 
 if __name__ == "__main__":
 	print("main...")
 	uis = UserInfoService()
-	all_user = uis.get_all()
-	already_user = uis.get_all_already_read_user()
-	not_user = uis.get_all_not_read_user()
-	reading_user = uis.get_all_reading_user()
-	register_user = uis.get_register()
-	
-	print("一共有用户: {}".format(len(all_user)))
-	print("已经完成: {} 完成比例: {:.3f}".format(len(already_user), len(already_user)/len(all_user)))
-	print("未完成: {}".format(len(not_user)))
-	print("正在进行: {}".format(len(reading_user)))
-	for user in reading_user:
-		res = uis.get_user_read_count(user[0])
-		print("User:{} has already reads {}".format(user[1], res))
-	print("注册用户:{}".format(len(register_user)))
-	for user in register_user:
-		print("Mobile:{}".format(user[1]))
+	if len(argv)>1:
+		if argv[1] == "clear":
+			uis.update_all_flag()
+		elif argv[1] == "level":
+			res = uis.get_user_level(argv[2])
+			for user in res:
+				print("Mobile: {}, IP:{}, Level:{}, Score:{}, Register:{}".format(user[1], user[2], user[6], user[5], uis.get_time_str(int(user[4]))))
+		elif argv[1] == "score":
+			res = uis.get_user_score(argv[2])
+			for user in res:
+				print("Mobile: {}, IP:{}, Level:{}, Score:{}, Register:{}".format(user[1], user[2], user[6], user[5], uis.get_time_str(int(user[4]))))
+		elif argv[1] == "ip":
+			res = uis.get_user_ip(argv[2])
+			for user in res:
+				print("Mobile: {}, IP:{}, Level:{}, Score:{}, Register:{}".format(user[1], user[2], user[6], user[5], uis.get_time_str(int(user[4]))))
+	else:
+		all_user = uis.get_all()
+		already_user = uis.get_all_already_read_user()
+		not_user = uis.get_all_not_read_user()
+		reading_user = uis.get_all_reading_user()
+		register_user = uis.get_register()
+		
+		print("一共有用户: {}".format(len(all_user)))
+		print("已经完成: {} 完成比例: {:.3f}".format(len(already_user), len(already_user)/len(all_user)))
+		print("未完成: {}".format(len(not_user)))
+		print("正在进行: {}".format(len(reading_user)))
+		for user in reading_user:
+			res = uis.get_user_read_count(user[0])
+			print("User:{} has already reads {}".format(user[1], res))
+		print("注册用户:{}".format(len(register_user)))
+		for user in register_user:
+			print("Mobile:{}, IP:{}".format(user[1], user[2]))
+		
 	
 	
