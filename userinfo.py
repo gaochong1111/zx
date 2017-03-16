@@ -178,9 +178,9 @@ class UserInfoService(object):
 		res = self.db.fetchone(conn, sql, mobile)
 		
 		if len(res)>0:
-			return res[0]
+			return res
 		else:
-			return None
+			return []
 	
 	def get_register(self):
 		'''
@@ -308,7 +308,6 @@ class UserInfoService(object):
 		return time_str
 
 if __name__ == "__main__":
-	print("main...")
 	uis = UserInfoService()
 	if len(argv)>1:
 		if argv[1] == "clear":
