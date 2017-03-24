@@ -16,6 +16,7 @@ def run(mobile) :
 	total=0
 	total = 0 # total read times
 	read_zero_num = 0 #the count of read valid times is zero
+	THRESHOLD = 15
 	while total < THRESHOLD and read_zero_num < 5:
 		count = zx.visit_list()
 		if count > 0:
