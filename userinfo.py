@@ -1,5 +1,6 @@
 from dbutil import DBUtil
 import time
+import random
 from sys import argv
 from common import ZX
 class UserInfoService(object):
