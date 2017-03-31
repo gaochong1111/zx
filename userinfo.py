@@ -209,7 +209,7 @@ class UserInfoService(object):
 		conn = self.db.get_conn()
 		res = self.db.fetchall(conn, sql)
 		if len(res)>0:
-			return res[0]
+			return res[random.randint(0, len(res)-1)]
 		else:
 			return None
 	
